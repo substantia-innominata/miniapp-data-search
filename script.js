@@ -1,146 +1,149 @@
-let appContainer = null
-let elements = ['bromine', 'cadmium', 'lead']
-let searchPhrase = ''
-let isSearchFocused = false
+const initListApp = (function () {
 
-const addElement = function (newElement) {
-    if (!newElement) return
+    let appContainer = null
+    let elements = ['bromine', 'cadmium', 'lead']
+    let searchPhrase = ''
+    let isSearchFocused = false
 
-    elements = elements.concat(newElement)
+    const addElement = function (newElement) {
+        if (!newElement) return
 
-    searchPhrase = ''
+        elements = elements.concat(newElement)
 
-    render()
-}
+        searchPhrase = ''
 
-const elementExists = function (element) {
-    return elements.includes(element)
-}
+        render()
+    }
 
-const renderList = function () {
+    const elementExists = function (element) {
+        return elements.includes(element)
+    }
 
-    const ul = document.createElement('ul')
+    const renderList = function () {
 
-    for (let i = 0; i < elements.length; i++) {
+        const ul = document.createElement('ul')
 
-        const li = document.createElement('li')
+        for (let i = 0; i < elements.length; i++) {
 
-        li.innerText = elements[i]
+            const li = document.createElement('li')
 
-        ul.appendChild(li)
+            li.innerText = elements[i]
+
+            ul.appendChild(li)
+
+        }
+
+        return ul
 
     }
 
-    return ul
+    const renderNewElementInput = function () {
 
-}
+        const form = document.createElement('form')
 
-const renderNewElementInput = function () {
+        const input = document.createElement('input')
+        const button = document.createElement('button')
 
-    const form = document.createElement('form')
+        input.setAttribute('placeholder', 'Add new element')
+        button.innerText = 'ADD'
 
-    const input = document.createElement('input')
-    const button = document.createElement('button')
+        form.addEventListener(
+            'submit',
+            function (event) {
+                event.preventDefault()
 
-    input.setAttribute('placeholder', 'Add new element')
-    button.innerText = 'ADD'
-
-    form.addEventListener(
-        'submit',
-        function (event) {
-            event.preventDefault()
-
-            addElement(input.value)
-        }
-    )
-
-    form.appendChild(input)
-    form.appendChild(button)
-
-    return form
-
-}
-
-const renderSearchInput = function () {
-
-    const div = document.createElement('div')
-
-    const input = document.createElement('input')
-
-    input.setAttribute('placeholder', 'Search element')
-    input.value = searchPhrase
-
-    if (isSearchFocused) {
-        setTimeout(
-            function () {
-                input.focus()
-            },
-            0
+                addElement(input.value)
+            }
         )
+
+        form.appendChild(input)
+        form.appendChild(button)
+
+        return form
+
     }
 
-    input.addEventListener(
-        'input',
-        function () {
-            searchPhrase = input.value
-            isSearchFocused = true
+    const renderSearchInput = function () {
 
-            render()
+        const div = document.createElement('div')
+
+        const input = document.createElement('input')
+
+        input.setAttribute('placeholder', 'Search element')
+        input.value = searchPhrase
+
+        if (isSearchFocused) {
+            setTimeout(
+                function () {
+                    input.focus()
+                },
+                0
+            )
         }
-    )
 
-    div.appendChild(input)
+        input.addEventListener(
+            'input',
+            function () {
+                searchPhrase = input.value
+                isSearchFocused = true
 
-    return div
+                render()
+            }
+        )
 
-}
+        div.appendChild(input)
 
-const renderSearchResult = function () {
+        return div
 
-    const p = document.createElement('p')
-
-    if (elementExists(searchPhrase)) {
-        p.innerText = 'Exists'
-    } else {
-        p.innerText = 'Not found'
     }
 
-    return p
+    const renderSearchResult = function () {
 
-}
+        const p = document.createElement('p')
 
+        if (elementExists(searchPhrase)) {
+            p.innerText = 'Result: search phrase found in the list'
+        } else {
+            p.innerText = 'Result: search phrase not found in the list'
+        }
 
-const render = function () {
+        return p
 
-    if (!appContainer) {
-        appContainer = document.createElement('div')
     }
 
-    appContainer.innerHTML = ''
+    const render = function () {
 
-    const list = renderList()
-    const newElementInput = renderNewElementInput()
-    const searchInput = renderSearchInput()
-    const searchResult = renderSearchResult()
+        if (!appContainer) {
+            appContainer = document.createElement('div')
+        }
 
-    appContainer.appendChild(list)
-    appContainer.appendChild(newElementInput)
-    appContainer.appendChild(searchInput)
-    appContainer.appendChild(searchResult)
+        appContainer.innerHTML = ''
 
-    isSearchFocused = false
+        const list = renderList()
+        const newElementInput = renderNewElementInput()
+        const searchInput = renderSearchInput()
+        const searchResult = renderSearchResult()
 
-    return appContainer
-}
+        appContainer.appendChild(list)
+        appContainer.appendChild(newElementInput)
+        appContainer.appendChild(searchInput)
+        appContainer.appendChild(searchResult)
 
-const init = function (containerSelector) {
-    const container = document.querySelector(containerSelector)
+        isSearchFocused = false
 
-    if (!container) render
+        return appContainer
+    }
 
-    const app = render()
+    const init = function (containerSelector) {
+        const container = document.querySelector(containerSelector)
 
-    container.appendChild(app)
-}
+        if (!container) render
 
-init('body')
+        const app = render()
+
+        container.appendChild(app)
+    }
+
+    return init
+
+})()

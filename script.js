@@ -15,8 +15,48 @@ const initListApp = (function () {
         render()
     }
 
+    const removeElement = function (indexToRemove) {
+
+        elements = removeItem(elements, indexToRemove)
+
+        render()
+    }
+
     const elementExists = function (element) {
         return elements.includes(element)
+    }
+
+    const removeItem = function (array, indexToRemove) {
+
+        const head = array.slice(0, indexToRemove)
+        const tail = array.slice(indexToRemove + 1)
+
+        const newArray = head.concat(tail)
+
+        return newArray
+
+    }
+
+    const renderListItem = function (element, index) {
+
+        const li = document.createElement('li')
+        const button = document.createElement('button')
+        const text = document.createTextNode(' ' + element)
+
+        button.innerText = 'X'
+
+        button.addEventListener(
+            'click',
+            function () {
+                removeElement(index)
+            }
+        )
+
+        li.appendChild(button)
+        li.appendChild(text)
+
+        return li
+
     }
 
     const renderList = function () {
@@ -25,9 +65,7 @@ const initListApp = (function () {
 
         for (let i = 0; i < elements.length; i++) {
 
-            const li = document.createElement('li')
-
-            li.innerText = elements[i]
+            const li = renderListItem(elements[i], i)
 
             ul.appendChild(li)
 

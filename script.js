@@ -1,7 +1,10 @@
+let appContainer = null
 let elements = ['bromine', 'cadmium', 'lead']
 
 const addElement = function (newElement) {
     elements = elements.concat(newElement)
+
+    render()
 }
 
 const searchElement = function (element) {
@@ -35,6 +38,13 @@ const renderNewElementInput = function () {
 
     input.setAttribute('placeholder', 'Add new element')
     button.innerText = 'ADD'
+
+    button.addEventListener(
+        'click',
+        function () {
+            addElement(input.value)
+        }
+    )
 
     div.appendChild(input)
     div.appendChild(button)
@@ -70,19 +80,23 @@ const renderSearchResult = function () {
 
 const render = function () {
 
-    const div = document.createElement('div')
+    if (!appContainer) {
+        appContainer = document.createElement('div')
+    }
+
+    appContainer.innerHTML = ''
 
     const list = renderList()
     const newElementInput = renderNewElementInput()
     const searchInput = renderSearchInput()
     const searchResult = renderSearchResult()
 
-    div.appendChild(list)
-    div.appendChild(newElementInput)
-    div.appendChild(searchInput)
-    div.appendChild(searchResult)
+    appContainer.appendChild(list)
+    appContainer.appendChild(newElementInput)
+    appContainer.appendChild(searchInput)
+    appContainer.appendChild(searchResult)
 
-    return div
+    return appContainer
 }
 
 const init = function (containerSelector) {

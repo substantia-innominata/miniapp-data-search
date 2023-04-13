@@ -15,6 +15,17 @@ const initListApp = (function () {
         render()
     }
 
+    const removeItem = function (array, indexToRemove) {
+
+        const head = array.slice(0, indexToRemove)
+        const tail = array.slice(indexToRemove + 1)
+
+        const newArray = head.concat(tail)
+
+        return newArray
+
+    }
+
     const removeElement = function (indexToRemove) {
 
         elements = removeItem(elements, indexToRemove)
@@ -26,14 +37,12 @@ const initListApp = (function () {
         return elements.includes(element)
     }
 
-    const removeItem = function (array, indexToRemove) {
+    const renderTitle = function () {
 
-        const head = array.slice(0, indexToRemove)
-        const tail = array.slice(indexToRemove + 1)
+        const h2 = document.createElement('h2')
+        h2.innerText = 'List of elements'
 
-        const newArray = head.concat(tail)
-
-        return newArray
+        return h2
 
     }
 
@@ -157,11 +166,13 @@ const initListApp = (function () {
 
         appContainer.innerHTML = ''
 
+        const title = renderTitle()
         const list = renderList()
         const newElementInput = renderNewElementInput()
         const searchInput = renderSearchInput()
         const searchResult = renderSearchResult()
 
+        appContainer.appendChild(title)
         appContainer.appendChild(list)
         appContainer.appendChild(newElementInput)
         appContainer.appendChild(searchInput)
